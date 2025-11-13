@@ -1,6 +1,6 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { createNote } from '@/lib/api';
+import { createNote } from '@/lib/api/clientApi';
 import NoteForm from '@/components/NoteForm/NoteForm';
 import css from './CreateNote.module.css';
 import type { Metadata } from 'next';
@@ -30,11 +30,10 @@ export default function CreateNotePage() {
       await createNote(newNote);
     } catch (error) {
       console.error('Failed to create note:', error);
-      // У реальному додатку тут можна обробити помилку більш витончено
       return;
     }
 
-    revalidatePath('/notes/filter/all', 'layout'); // Оновлюємо кеш для списку нотаток
+    revalidatePath('/notes/filter/all', 'layout');
     redirect('/notes/filter/all');
   }
 

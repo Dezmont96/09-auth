@@ -4,7 +4,7 @@ import {
   QueryClient,
 } from '@tanstack/react-query';
 import { notFound } from 'next/navigation';
-import { fetchNoteById } from '@/lib/api';
+import { fetchNoteById } from '@/lib/api/serverApi';
 import ModalNotePreviewClient from './NotePreview.client';
 
 type Props = { params: Promise<{ id: string }> };
