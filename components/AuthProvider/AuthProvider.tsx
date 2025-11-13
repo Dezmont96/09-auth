@@ -1,51 +1,32 @@
 'use client';
 
 import { useEffect } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
-import { checkSession } from '@/lib/api/clientApi';
+import { getMe } from '@/lib/api/clientApi';
 import { useAuthStore } from '@/lib/store/authStore';
 import Loader from '../Loader/Loader';
 
-const privateRoutes = ['/profile', '/notes'];
-const authRoutes = ['/sign-in', '/sign-up'];
-
 export default function AuthProvider({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname();
-  const router = useRouter();
-  const { isAuthenticated, setUser, clearIsAuthenticated } = useAuthStore();
-  
-  const isPrivateRoute = privateRoutes.some(route => pathname.startsWith(route));
-  const isAuthRoute = authRoutes.includes(pathname);
+  const { setUser, isAuthenticated } = useAuthStore();
 
-  const { data, isError, isSuccess, isLoading } = useQuery({
-    queryKey: ['session'],
-    queryFn: checkSession,
-    enabled: !isAuthenticated, 
+  const { data, isLoading, isError, isSuccess } = useQuery({
+    queryKey: ['user-profile'],
+    queryFn: getMe,
+    enabled: !isAuthenticated,
     retry: false,
     refetchOnWindowFocus: false,
     refetchOnMount: false,
   });
 
   useEffect(() => {
-    if (isSuccess && data?.user) {
-      setUser(data.user);
-    } else if (isSuccess && !data?.user) {
-        clearIsAuthenticated();
-    } else if (isError) {
-        clearIsAuthenticated();
+
+    if (isSuccess && data) {
+      setUser(data);
     }
-  }, [isSuccess, isError, data, setUser, clearIsAuthenticated]);
-  
-  useEffect(() => {
-    if (!isLoading) {
-        if (isPrivateRoute && !isAuthenticated) {
-            router.replace('/sign-in');
-        } else if (isAuthRoute && isAuthenticated) {
-            router.replace('/profile');
-        }
+    else if (isError) {
+      setUser(null);
     }
-  }, [isLoading, isAuthenticated, isPrivateRoute, isAuthRoute, router]);
+  }, [isSuccess, isError, data, setUser]);
 
   if (isLoading) {
     return <Loader />;

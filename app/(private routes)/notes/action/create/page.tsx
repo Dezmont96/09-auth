@@ -1,6 +1,6 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { createNote } from '@/lib/api/clientApi';
+import { createNoteOnServer } from '@/lib/api/serverApi'; 
 import NoteForm from '@/components/NoteForm/NoteForm';
 import css from './CreateNote.module.css';
 import type { Metadata } from 'next';
@@ -27,7 +27,7 @@ export default function CreateNotePage() {
     };
 
     try {
-      await createNote(newNote);
+      await createNoteOnServer(newNote); 
     } catch (error) {
       console.error('Failed to create note:', error);
       return;

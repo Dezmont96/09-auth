@@ -61,14 +61,17 @@ const authRoutes = [
     '/sign-up'
 ];
 function proxy(request) {
-    const sessionCookie = request.cookies.get('session');
+    // ВИПРАВЛЕНО: Шукаємо 'accessToken' замість 'session'
+    const accessToken = request.cookies.get('accessToken');
     const { pathname } = request.nextUrl;
     const isPrivateRoute = privateRoutes.some((route)=>pathname.startsWith(route));
     const isAuthRoute = authRoutes.includes(pathname);
-    if (!sessionCookie && isPrivateRoute) {
+    // Якщо немає accessToken і користувач намагається зайти на приватний роут
+    if (!accessToken && isPrivateRoute) {
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$middleware$5d$__$28$ecmascript$29$__["NextResponse"].redirect(new URL('/sign-in', request.url));
     }
-    if (sessionCookie && isAuthRoute) {
+    // Якщо є accessToken і користувач намагається зайти на сторінку входу/реєстрації
+    if (accessToken && isAuthRoute) {
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$middleware$5d$__$28$ecmascript$29$__["NextResponse"].redirect(new URL('/profile', request.url));
     }
     return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$middleware$5d$__$28$ecmascript$29$__["NextResponse"].next();

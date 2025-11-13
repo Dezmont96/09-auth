@@ -340,7 +340,7 @@ const metadata = {
     openGraph: {
         title: 'NoteHub',
         description: 'Your personal note management application.',
-        url: 'https://your-vercel-deployment-url.vercel.app',
+        url: 'https://09-auth-beige-ten.vercel.app',
         images: [
             'https://ac.goit.global/fullstack/react/notehub-og-meta.jpg'
         ]

@@ -4,18 +4,18 @@ import type { NextRequest } from 'next/server';
 const privateRoutes = ['/profile', '/notes'];
 const authRoutes = ['/sign-in', '/sign-up'];
 
-export function proxy(request: NextRequest) {
-  const sessionCookie = request.cookies.get('session');
+export function middleware(request: NextRequest) {
+  const accessToken = request.cookies.get('accessToken');
   const { pathname } = request.nextUrl;
 
   const isPrivateRoute = privateRoutes.some(route => pathname.startsWith(route));
   const isAuthRoute = authRoutes.includes(pathname);
 
-  if (!sessionCookie && isPrivateRoute) {
+  if (!accessToken && isPrivateRoute) {
     return NextResponse.redirect(new URL('/sign-in', request.url));
   }
 
-  if (sessionCookie && isAuthRoute) {
+  if (accessToken && isAuthRoute) {
     return NextResponse.redirect(new URL('/profile', request.url));
   }
 

@@ -33,11 +33,24 @@ __turbopack_context__.s([
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = /*#__PURE__*/ __turbopack_context__.i("[project]/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/axios/lib/axios.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$js$2d$cookie$2f$dist$2f$js$2e$cookie$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/js-cookie/dist/js.cookie.mjs [app-client] (ecmascript)");
+;
 ;
 const baseURL = (("TURBOPACK compile-time value", "http://localhost:3000") || '') + '/api';
 const api = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].create({
     baseURL,
     withCredentials: true
+});
+api.interceptors.request.use((config)=>{
+    if ("TURBOPACK compile-time truthy", 1) {
+        const accessToken = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$js$2d$cookie$2f$dist$2f$js$2e$cookie$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].get('accessToken');
+        if (accessToken) {
+            config.headers.Authorization = `Bearer ${accessToken}`;
+        }
+    }
+    return config;
+}, (error)=>{
+    return Promise.reject(error);
 });
 const __TURBOPACK__default__export__ = api;
 if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
@@ -461,7 +474,6 @@ __turbopack_context__.s([
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$compiler$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/compiler-runtime.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/navigation.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$useQuery$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/@tanstack/react-query/build/modern/useQuery.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$api$2f$clientApi$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/lib/api/clientApi.ts [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$store$2f$authStore$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/lib/store/authStore.ts [app-client] (ecmascript)");
@@ -475,176 +487,102 @@ var _s = __turbopack_context__.k.signature();
 ;
 ;
 ;
-;
-const privateRoutes = [
-    '/profile',
-    '/notes'
-];
-const authRoutes = [
-    '/sign-in',
-    '/sign-up'
-];
 function AuthProvider(t0) {
     _s();
-    const $ = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$compiler$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["c"])(25);
-    if ($[0] !== "4a5300aa92819ddce7d1529a05645957594d752c7860217924856724c7d5f4f2") {
-        for(let $i = 0; $i < 25; $i += 1){
+    const $ = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$compiler$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["c"])(13);
+    if ($[0] !== "c3ab3e3cf4be38903450d8bae5b471db2eb27345aa0c321abd4b1ad047945fce") {
+        for(let $i = 0; $i < 13; $i += 1){
             $[$i] = Symbol.for("react.memo_cache_sentinel");
         }
-        $[0] = "4a5300aa92819ddce7d1529a05645957594d752c7860217924856724c7d5f4f2";
+        $[0] = "c3ab3e3cf4be38903450d8bae5b471db2eb27345aa0c321abd4b1ad047945fce";
     }
     const { children } = t0;
-    const pathname = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["usePathname"])();
-    const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"])();
-    const { isAuthenticated, setUser, clearIsAuthenticated } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$store$2f$authStore$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAuthStore"])();
+    const { setUser, isAuthenticated } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$store$2f$authStore$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAuthStore"])();
     let t1;
-    if ($[1] !== pathname) {
-        t1 = privateRoutes.some({
-            "AuthProvider[privateRoutes.some()]": (route)=>pathname.startsWith(route)
-        }["AuthProvider[privateRoutes.some()]"]);
-        $[1] = pathname;
-        $[2] = t1;
-    } else {
-        t1 = $[2];
-    }
-    const isPrivateRoute = t1;
-    let t2;
-    if ($[3] !== pathname) {
-        t2 = authRoutes.includes(pathname);
-        $[3] = pathname;
-        $[4] = t2;
-    } else {
-        t2 = $[4];
-    }
-    const isAuthRoute = t2;
-    let t3;
-    if ($[5] === Symbol.for("react.memo_cache_sentinel")) {
-        t3 = [
-            "session"
+    if ($[1] === Symbol.for("react.memo_cache_sentinel")) {
+        t1 = [
+            "user-profile"
         ];
-        $[5] = t3;
+        $[1] = t1;
     } else {
-        t3 = $[5];
+        t1 = $[1];
     }
-    const t4 = !isAuthenticated;
-    let t5;
-    if ($[6] !== t4) {
-        t5 = {
-            queryKey: t3,
-            queryFn: __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$api$2f$clientApi$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["checkSession"],
-            enabled: t4,
+    const t2 = !isAuthenticated;
+    let t3;
+    if ($[2] !== t2) {
+        t3 = {
+            queryKey: t1,
+            queryFn: __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$api$2f$clientApi$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getMe"],
+            enabled: t2,
             retry: false,
             refetchOnWindowFocus: false,
             refetchOnMount: false
         };
-        $[6] = t4;
-        $[7] = t5;
+        $[2] = t2;
+        $[3] = t3;
     } else {
-        t5 = $[7];
+        t3 = $[3];
     }
-    const { data, isError, isSuccess, isLoading } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$useQuery$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useQuery"])(t5);
-    let t6;
-    let t7;
-    if ($[8] !== clearIsAuthenticated || $[9] !== data || $[10] !== isError || $[11] !== isSuccess || $[12] !== setUser) {
-        t6 = ({
+    const { data, isLoading, isError, isSuccess } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$useQuery$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useQuery"])(t3);
+    let t4;
+    let t5;
+    if ($[4] !== data || $[5] !== isError || $[6] !== isSuccess || $[7] !== setUser) {
+        t4 = ({
             "AuthProvider[useEffect()]": ()=>{
-                if (isSuccess && data?.user) {
-                    setUser(data.user);
+                if (isSuccess && data) {
+                    setUser(data);
                 } else {
-                    if (isSuccess && !data?.user) {
-                        clearIsAuthenticated();
-                    } else {
-                        if (isError) {
-                            clearIsAuthenticated();
-                        }
+                    if (isError) {
+                        setUser(null);
                     }
                 }
             }
         })["AuthProvider[useEffect()]"];
-        t7 = [
+        t5 = [
             isSuccess,
             isError,
             data,
-            setUser,
-            clearIsAuthenticated
+            setUser
         ];
-        $[8] = clearIsAuthenticated;
-        $[9] = data;
-        $[10] = isError;
-        $[11] = isSuccess;
-        $[12] = setUser;
-        $[13] = t6;
-        $[14] = t7;
+        $[4] = data;
+        $[5] = isError;
+        $[6] = isSuccess;
+        $[7] = setUser;
+        $[8] = t4;
+        $[9] = t5;
     } else {
-        t6 = $[13];
-        t7 = $[14];
+        t4 = $[8];
+        t5 = $[9];
     }
-    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])(t6, t7);
-    let t8;
-    let t9;
-    if ($[15] !== isAuthRoute || $[16] !== isAuthenticated || $[17] !== isLoading || $[18] !== isPrivateRoute || $[19] !== router) {
-        t8 = ({
-            "AuthProvider[useEffect()]": ()=>{
-                if (!isLoading) {
-                    if (isPrivateRoute && !isAuthenticated) {
-                        router.replace("/sign-in");
-                    } else {
-                        if (isAuthRoute && isAuthenticated) {
-                            router.replace("/profile");
-                        }
-                    }
-                }
-            }
-        })["AuthProvider[useEffect()]"];
-        t9 = [
-            isLoading,
-            isAuthenticated,
-            isPrivateRoute,
-            isAuthRoute,
-            router
-        ];
-        $[15] = isAuthRoute;
-        $[16] = isAuthenticated;
-        $[17] = isLoading;
-        $[18] = isPrivateRoute;
-        $[19] = router;
-        $[20] = t8;
-        $[21] = t9;
-    } else {
-        t8 = $[20];
-        t9 = $[21];
-    }
-    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])(t8, t9);
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])(t4, t5);
     if (isLoading) {
-        let t10;
-        if ($[22] === Symbol.for("react.memo_cache_sentinel")) {
-            t10 = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$Loader$2f$Loader$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
+        let t6;
+        if ($[10] === Symbol.for("react.memo_cache_sentinel")) {
+            t6 = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$Loader$2f$Loader$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                 fileName: "[project]/components/AuthProvider/AuthProvider.tsx",
-                lineNumber: 142,
-                columnNumber: 13
+                lineNumber: 82,
+                columnNumber: 12
             }, this);
-            $[22] = t10;
+            $[10] = t6;
         } else {
-            t10 = $[22];
+            t6 = $[10];
         }
-        return t10;
+        return t6;
     }
-    let t10;
-    if ($[23] !== children) {
-        t10 = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
+    let t6;
+    if ($[11] !== children) {
+        t6 = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
             children: children
         }, void 0, false);
-        $[23] = children;
-        $[24] = t10;
+        $[11] = children;
+        $[12] = t6;
     } else {
-        t10 = $[24];
+        t6 = $[12];
     }
-    return t10;
+    return t6;
 }
-_s(AuthProvider, "dCZoX/kSSvRIlNSv/Pzfd+u8mIA=", false, function() {
+_s(AuthProvider, "eXVtUjof/ANhyXgvlUHsue6ovyQ=", false, function() {
     return [
-        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["usePathname"],
-        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"],
         __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$store$2f$authStore$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAuthStore"],
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$useQuery$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useQuery"]
     ];
