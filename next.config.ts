@@ -8,6 +8,7 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'ac.goit.global',
       },
+      // Тут можна додати інші домени, якщо аватари будуть з інших джерел
     ],
   },
 };
