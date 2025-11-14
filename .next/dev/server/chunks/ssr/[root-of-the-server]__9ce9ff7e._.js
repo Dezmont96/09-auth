@@ -73,20 +73,11 @@ __turbopack_context__.s([
     ()=>__TURBOPACK__default__export__
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/axios/lib/axios.js [app-rsc] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$js$2d$cookie$2f$dist$2f$js$2e$cookie$2e$mjs__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/js-cookie/dist/js.cookie.mjs [app-rsc] (ecmascript)");
 ;
-;
-const baseURL = (("TURBOPACK compile-time value", "http://localhost:3000") || '') + '/api';
+const baseURL = ("TURBOPACK compile-time value", "http://localhost:3000") + '/api';
 const api = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"].create({
     baseURL,
     withCredentials: true
-});
-api.interceptors.request.use((config)=>{
-    if ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
-    ;
-    return config;
-}, (error)=>{
-    return Promise.reject(error);
 });
 const __TURBOPACK__default__export__ = api;
 }),
@@ -155,7 +146,7 @@ const checkSession = async ()=>{
     const response = await __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$api$2f$api$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"].get('/auth/session', {
         headers
     });
-    return response.data;
+    return response;
 };
 const createNoteOnServer = async (noteData)=>{
     const headers = await getAuthHeaders();

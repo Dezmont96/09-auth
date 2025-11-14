@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getMe, updateMe } from '@/lib/api/clientApi';
+import { useAuthStore } from '@/lib/store/authStore';
 import Image from 'next/image';
 import css from './EditProfilePage.module.css';
 import Loader from '@/components/Loader/Loader';
@@ -13,6 +14,7 @@ export default function EditProfilePage() {
   const router = useRouter();
   const queryClient = useQueryClient();
   const [username, setUsername] = useState('');
+  const { setUser } = useAuthStore();
 
   const { data: user, isLoading, isError } = useQuery({
     queryKey: ['user-profile'],
@@ -27,7 +29,8 @@ export default function EditProfilePage() {
 
   const mutation = useMutation({
     mutationFn: (newUsername: string) => updateMe({ username: newUsername }),
-    onSuccess: () => {
+    onSuccess: (updatedUser) => {
+      setUser(updatedUser); 
       queryClient.invalidateQueries({ queryKey: ['user-profile'] });
       router.push('/profile');
     },

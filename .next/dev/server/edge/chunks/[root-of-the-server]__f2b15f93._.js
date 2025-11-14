@@ -31,16 +31,43 @@ const authRoutes = [
     '/sign-in',
     '/sign-up'
 ];
-function middleware(request) {
-    const accessToken = request.cookies.get('accessToken');
+async function middleware(request) {
     const { pathname } = request.nextUrl;
+    const accessToken = request.cookies.get('accessToken')?.value;
+    const refreshToken = request.cookies.get('refreshToken')?.value;
     const isPrivateRoute = privateRoutes.some((route)=>pathname.startsWith(route));
     const isAuthRoute = authRoutes.includes(pathname);
-    if (!accessToken && isPrivateRoute) {
-        return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$exports$2f$index$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].redirect(new URL('/sign-in', request.url));
+    if (!accessToken) {
+        if (refreshToken && isPrivateRoute) {
+            try {
+                const response = await fetch(new URL('/api/auth/session', request.url), {
+                    headers: {
+                        'Cookie': `refreshToken=${refreshToken}`
+                    }
+                });
+                if (response.ok) {
+                    const newHeaders = new Headers(response.headers);
+                    const nextResponse = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$exports$2f$index$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].next({
+                        request: {
+                            headers: newHeaders
+                        }
+                    });
+                    const setCookie = response.headers.get('set-cookie');
+                    if (setCookie) {
+                        nextResponse.headers.set('set-cookie', setCookie);
+                    }
+                    return nextResponse;
+                }
+            } catch (e) {
+                return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$exports$2f$index$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].redirect(new URL('/sign-in', request.url));
+            }
+        }
+        if (isPrivateRoute) {
+            return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$exports$2f$index$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].redirect(new URL('/sign-in', request.url));
+        }
     }
     if (accessToken && isAuthRoute) {
-        return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$exports$2f$index$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].redirect(new URL('/profile', request.url));
+        return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$exports$2f$index$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].redirect(new URL('/', request.url));
     }
     return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$exports$2f$index$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].next();
 }

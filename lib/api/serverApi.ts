@@ -3,6 +3,7 @@ import api from './api';
 import type { Note, CreateNotePayload } from '@/types/note';
 import type { User } from '@/types/user';
 import type { AuthResponse } from './types';
+import { AxiosResponse } from 'axios';
 
 async function getAuthHeaders() {
   const cookieStore = await cookies();
@@ -39,10 +40,10 @@ export const getMe = async (): Promise<User> => {
   return response.data;
 };
 
-export const checkSession = async (): Promise<AuthResponse> => {
+export const checkSession = async (): Promise<AxiosResponse<AuthResponse>> => {
   const headers = await getAuthHeaders();
   const response = await api.get('/auth/session', { headers });
-  return response.data;
+  return response;
 };
 
 export const createNoteOnServer = async (noteData: CreateNotePayload): Promise<Note> => {

@@ -3,38 +3,53 @@
 import { useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useNoteStore } from '@/lib/store/noteStore';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { createNote } from '@/lib/api/clientApi';
 import css from './NoteForm.module.css';
 
-interface NoteFormProps {
-  action: (formData: FormData) => Promise<void>;
-}
-
-const NoteForm: React.FC<NoteFormProps> = ({ action }) => {
+const NoteForm: React.FC = () => {
   const router = useRouter();
-  const formRef = useRef<HTMLFormElement>(null);
+  const queryClient = useQueryClient();
   const { draft, setDraft, clearDraft } = useNoteStore();
-  
+  const isSubmitted = useRef(false);
+
   useEffect(() => {
     return () => {
-      if (formRef.current?.dataset.submitted === 'true') {
+      if (isSubmitted.current) {
         clearDraft();
       }
     };
   }, [clearDraft]);
 
-  const handleFormAction = async (formData: FormData) => {
-    if (formRef.current) {
-      formRef.current.dataset.submitted = 'true';
+  const mutation = useMutation({
+    mutationFn: createNote,
+    onSuccess: () => {
+      isSubmitted.current = true;
+      queryClient.invalidateQueries({ queryKey: ['notes'] });
+      router.back();
+    },
+    onError: (error: any) => {
+      alert(error.response?.data?.message || 'Failed to create note');
     }
-    await action(formData);
+  });
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const newNote = {
+      title: formData.get('title') as string,
+      content: formData.get('content') as string,
+      tag: formData.get('tag') as string,
+    };
+    mutation.mutate(newNote);
   };
-  
+
   const handleCancel = () => {
     router.back();
   };
   
   return (
-    <form ref={formRef} action={handleFormAction} className={css.form}>
+    <form onSubmit={handleSubmit} className={css.form}>
       <div className={css.formGroup}>
         <label htmlFor="title">Title</label>
         <input
@@ -49,7 +64,6 @@ const NoteForm: React.FC<NoteFormProps> = ({ action }) => {
           maxLength={50}
         />
       </div>
-
       <div className={css.formGroup}>
         <label htmlFor="content">Content</label>
         <textarea
@@ -62,7 +76,6 @@ const NoteForm: React.FC<NoteFormProps> = ({ action }) => {
           maxLength={500}
         />
       </div>
-
       <div className={css.formGroup}>
         <label htmlFor="tag">Tag</label>
         <select
@@ -79,20 +92,12 @@ const NoteForm: React.FC<NoteFormProps> = ({ action }) => {
           <option value="Shopping">Shopping</option>
         </select>
       </div>
-
       <div className={css.actions}>
-        <button
-          type="button"
-          className={css.cancelButton}
-          onClick={handleCancel}
-        >
+        <button type="button" className={css.cancelButton} onClick={handleCancel} disabled={mutation.isPending}>
           Cancel
         </button>
-        <button
-          type="submit"
-          className={css.submitButton}
-        >
-          Create note
+        <button type="submit" className={css.submitButton} disabled={mutation.isPending}>
+          {mutation.isPending ? 'Creating...' : 'Create note'}
         </button>
       </div>
     </form>
