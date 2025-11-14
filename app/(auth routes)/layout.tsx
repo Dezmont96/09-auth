@@ -11,6 +11,7 @@ export default function AuthLayout({
   const router = useRouter();
 
   useEffect(() => {
+
     router.refresh();
   }, [router]);
 

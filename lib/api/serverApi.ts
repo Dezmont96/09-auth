@@ -1,21 +1,16 @@
 import { cookies } from 'next/headers';
+import type { AxiosResponse } from 'axios';
 import api from './api';
 import type { Note, CreateNotePayload } from '@/types/note';
 import type { User } from '@/types/user';
 import type { AuthResponse } from './types';
-import { AxiosResponse } from 'axios';
 
 async function getAuthHeaders() {
   const cookieStore = await cookies();
-  const accessToken = cookieStore.get('accessToken');
   
-  if (accessToken) {
-    return {
-      Authorization: `Bearer ${accessToken.value}`,
-      Cookie: `accessToken=${accessToken.value}`,
-    };
-  }
-  return {};
+  return {
+    Cookie: cookieStore.toString(),
+  };
 }
 
 export const fetchNotes = async (params: { page?: number; search?: string; tag?: string } = {}) => {

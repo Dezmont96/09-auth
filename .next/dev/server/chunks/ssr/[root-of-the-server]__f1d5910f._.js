@@ -95,22 +95,11 @@ __turbopack_context__.s([
     ()=>__TURBOPACK__default__export__
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/axios/lib/axios.js [app-rsc] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$js$2d$cookie$2f$dist$2f$js$2e$cookie$2e$mjs__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/js-cookie/dist/js.cookie.mjs [app-rsc] (ecmascript)");
 ;
-;
-const baseURL = (("TURBOPACK compile-time value", "http://localhost:3000") || '') + '/api';
+const baseURL = ("TURBOPACK compile-time value", "http://localhost:3000") + '/api';
 const api = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"].create({
     baseURL,
     withCredentials: true
-});
-// Interceptor для клієнтських запитів
-api.interceptors.request.use((config)=>{
-    // Перевіряємо, чи ми на клієнті
-    if ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
-    ;
-    return config;
-}, (error)=>{
-    return Promise.reject(error);
 });
 const __TURBOPACK__default__export__ = api;
 }),
@@ -120,6 +109,8 @@ const __TURBOPACK__default__export__ = api;
 __turbopack_context__.s([
     "checkSession",
     ()=>checkSession,
+    "createNoteOnServer",
+    ()=>createNoteOnServer,
     "fetchNoteById",
     ()=>fetchNoteById,
     "fetchNotes",
@@ -131,19 +122,11 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$head
 var __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$api$2f$api$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/lib/api/api.ts [app-rsc] (ecmascript)");
 ;
 ;
-// Робимо допоміжну функцію асинхронною
 async function getAuthHeaders() {
-    // ВИПРАВЛЕНО: Використовуємо await для отримання cookie store
     const cookieStore = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$headers$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["cookies"])();
-    const accessToken = cookieStore.get('accessToken');
-    if (accessToken) {
-        return {
-            Authorization: `Bearer ${accessToken.value}`,
-            // Також передаємо оригінальні кукі, щоб сесія працювала на проксі-роутах
-            Cookie: `accessToken=${accessToken.value}`
-        };
-    }
-    return {};
+    return {
+        Cookie: cookieStore.toString()
+    };
 }
 const fetchNotes = async (params = {})=>{
     const headers = await getAuthHeaders();
@@ -178,6 +161,13 @@ const getMe = async ()=>{
 const checkSession = async ()=>{
     const headers = await getAuthHeaders();
     const response = await __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$api$2f$api$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"].get('/auth/session', {
+        headers
+    });
+    return response;
+};
+const createNoteOnServer = async (noteData)=>{
+    const headers = await getAuthHeaders();
+    const response = await __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$api$2f$api$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"].post('/notes', noteData, {
         headers
     });
     return response.data;

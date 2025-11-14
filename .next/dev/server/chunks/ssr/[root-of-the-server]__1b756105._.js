@@ -102,14 +102,9 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$api$2f$api$2e$ts__$5b
 ;
 async function getAuthHeaders() {
     const cookieStore = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$headers$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["cookies"])();
-    const accessToken = cookieStore.get('accessToken');
-    if (accessToken) {
-        return {
-            Authorization: `Bearer ${accessToken.value}`,
-            Cookie: `accessToken=${accessToken.value}`
-        };
-    }
-    return {};
+    return {
+        Cookie: cookieStore.toString()
+    };
 }
 const fetchNotes = async (params = {})=>{
     const headers = await getAuthHeaders();

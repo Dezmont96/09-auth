@@ -30,7 +30,8 @@ export default function EditProfilePage() {
   const mutation = useMutation({
     mutationFn: (newUsername: string) => updateMe({ username: newUsername }),
     onSuccess: (updatedUser) => {
-      setUser(updatedUser); 
+      setUser(updatedUser);
+      
       queryClient.invalidateQueries({ queryKey: ['user-profile'] });
       router.push('/profile');
     },

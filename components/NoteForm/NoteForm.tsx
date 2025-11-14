@@ -5,7 +5,14 @@ import { useRouter } from 'next/navigation';
 import { useNoteStore } from '@/lib/store/noteStore';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createNote } from '@/lib/api/clientApi';
+import type { Note, CreateNotePayload } from '@/types/note';
+import { AxiosError } from 'axios';
 import css from './NoteForm.module.css';
+
+
+interface ApiError {
+  message: string;
+}
 
 const NoteForm: React.FC = () => {
   const router = useRouter();
@@ -21,22 +28,23 @@ const NoteForm: React.FC = () => {
     };
   }, [clearDraft]);
 
-  const mutation = useMutation({
+  const mutation = useMutation<Note, AxiosError<ApiError>, CreateNotePayload>({
     mutationFn: createNote,
     onSuccess: () => {
       isSubmitted.current = true;
       queryClient.invalidateQueries({ queryKey: ['notes'] });
       router.back();
     },
-    onError: (error: any) => {
-      alert(error.response?.data?.message || 'Failed to create note');
+    onError: (error) => {
+      const errorMessage = error.response?.data?.message || error.message;
+      alert(`Could not create note: ${errorMessage}`);
     }
   });
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    const newNote = {
+    const newNote: CreateNotePayload = {
       title: formData.get('title') as string,
       content: formData.get('content') as string,
       tag: formData.get('tag') as string,
@@ -64,6 +72,7 @@ const NoteForm: React.FC = () => {
           maxLength={50}
         />
       </div>
+
       <div className={css.formGroup}>
         <label htmlFor="content">Content</label>
         <textarea
@@ -76,6 +85,7 @@ const NoteForm: React.FC = () => {
           maxLength={500}
         />
       </div>
+
       <div className={css.formGroup}>
         <label htmlFor="tag">Tag</label>
         <select
@@ -92,6 +102,7 @@ const NoteForm: React.FC = () => {
           <option value="Shopping">Shopping</option>
         </select>
       </div>
+
       <div className={css.actions}>
         <button type="button" className={css.cancelButton} onClick={handleCancel} disabled={mutation.isPending}>
           Cancel

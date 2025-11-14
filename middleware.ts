@@ -1,19 +1,22 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import { cookies } from 'next/headers';
 
 const privateRoutes = ['/profile', '/notes'];
 const authRoutes = ['/sign-in', '/sign-up'];
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const accessToken = request.cookies.get('accessToken')?.value;
-  const refreshToken = request.cookies.get('refreshToken')?.value;
+  
+  const cookieStore = await cookies(); 
+  const accessToken = cookieStore.get('accessToken')?.value;
+  const refreshToken = cookieStore.get('refreshToken')?.value;
 
   const isPrivateRoute = privateRoutes.some(route => pathname.startsWith(route));
   const isAuthRoute = authRoutes.includes(pathname);
-
-  if (!accessToken) {
-    if (refreshToken && isPrivateRoute) {
+  
+  if (!accessToken && isPrivateRoute) {
+    if (refreshToken) {
       try {
         const response = await fetch(new URL('/api/auth/session', request.url), {
           headers: {
@@ -22,22 +25,33 @@ export async function middleware(request: NextRequest) {
         });
         
         if (response.ok) {
-          const newHeaders = new Headers(response.headers);
-          const nextResponse = NextResponse.next({ request: { headers: newHeaders } });
-          const setCookie = response.headers.get('set-cookie');
-          if (setCookie) {
-            nextResponse.headers.set('set-cookie', setCookie);
+          const newHeaders = new Headers(request.headers);
+          const setCookieHeader = response.headers.get('set-cookie');
+
+          if (setCookieHeader) {
+            newHeaders.set('Cookie', setCookieHeader);
           }
+          
+          const nextResponse = NextResponse.next({
+            request: {
+              headers: newHeaders,
+            },
+          });
+          
+          if (setCookieHeader) {
+            nextResponse.headers.set('set-cookie', setCookieHeader);
+          }
+
           return nextResponse;
         }
       } catch (e) {
-        return NextResponse.redirect(new URL('/sign-in', request.url));
+        console.error('Session refresh failed in middleware:', e);
       }
     }
     
-    if (isPrivateRoute) {
-      return NextResponse.redirect(new URL('/sign-in', request.url));
-    }
+    const redirectUrl = new URL('/sign-in', request.url);
+    redirectUrl.searchParams.set('redirectedFrom', pathname);
+    return NextResponse.redirect(redirectUrl);
   }
 
   if (accessToken && isAuthRoute) {
@@ -48,5 +62,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
+  matcher: ['/profile/:path*', '/notes/:path*', '/sign-in', '/sign-up'],
 };

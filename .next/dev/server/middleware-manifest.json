@@ -3,16 +3,28 @@
   "middleware": {
     "/": {
       "files": [
-        "server/edge/chunks/_e36d360d._.js",
+        "server/edge/chunks/_079ffdfa._.js",
         "server/edge/chunks/[root-of-the-server]__f2b15f93._.js",
-        "server/edge/chunks/turbopack-edge-wrapper_ab52e880.js"
+        "server/edge/chunks/turbopack-edge-wrapper_3d4e298b.js"
       ],
       "name": "middleware",
       "page": "/",
       "matchers": [
         {
-          "regexp": "^(?:\\/(_next\\/data\\/[^/]{1,}))?(?:\\/((?!api|_next\\/static|_next\\/image|favicon.ico).*))(\\\\.json)?[\\/#\\?]?$",
-          "originalSource": "/((?!api|_next/static|_next/image|favicon.ico).*)"
+          "regexp": "^(?:\\/(_next\\/data\\/[^/]{1,}))?\\/profile(?:\\/((?:[^\\/#\\?]+?)(?:\\/(?:[^\\/#\\?]+?))*))?(\\\\.json)?[\\/#\\?]?$",
+          "originalSource": "/profile/:path*"
+        },
+        {
+          "regexp": "^(?:\\/(_next\\/data\\/[^/]{1,}))?\\/notes(?:\\/((?:[^\\/#\\?]+?)(?:\\/(?:[^\\/#\\?]+?))*))?(\\\\.json)?[\\/#\\?]?$",
+          "originalSource": "/notes/:path*"
+        },
+        {
+          "regexp": "^(?:\\/(_next\\/data\\/[^/]{1,}))?\\/sign-in(\\\\.json)?[\\/#\\?]?$",
+          "originalSource": "/sign-in"
+        },
+        {
+          "regexp": "^(?:\\/(_next\\/data\\/[^/]{1,}))?\\/sign-up(\\\\.json)?[\\/#\\?]?$",
+          "originalSource": "/sign-up"
         }
       ],
       "wasm": [],
@@ -20,9 +32,9 @@
       "env": {
         "__NEXT_BUILD_ID": "development",
         "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "ok0Wrr8wWCkWAwE+Wxwt7YGbE1b+irof0kIbFyv49Qk=",
-        "__NEXT_PREVIEW_MODE_ID": "8ba920f39aec1e6ee05efc007187a322",
-        "__NEXT_PREVIEW_MODE_ENCRYPTION_KEY": "23db40e011f9acc7de907640b93fe1faa926d3f2e440fce6db503246258011dd",
-        "__NEXT_PREVIEW_MODE_SIGNING_KEY": "0e1d8a3e1d3c5450e926dc68bf7f9fc7bdc56f026b9ea1e03dc037c5377f5d5e"
+        "__NEXT_PREVIEW_MODE_ID": "699af6ab91f59f5d1c22dbd9fbf502bd",
+        "__NEXT_PREVIEW_MODE_ENCRYPTION_KEY": "f4a906cbe8075ae1680d5f814d7b4f61499435ca0bc93b6663a5e5279ff14707",
+        "__NEXT_PREVIEW_MODE_SIGNING_KEY": "e277bc68b4322082902138ed24ff8a02ba9f85a852cd6927449964a2dce9eb70"
       }
     }
   },
