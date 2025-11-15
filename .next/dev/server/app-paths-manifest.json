@@ -1,12 +1,9 @@
 {
   "/(auth routes)/sign-in/page": "app/(auth routes)/sign-in/page.js",
-  "/(private routes)/notes/action/create/page": "app/(private routes)/notes/action/create/page.js",
   "/(private routes)/notes/filter/[...slug]/page": "app/(private routes)/notes/filter/[...slug]/page.js",
   "/(private routes)/profile/page": "app/(private routes)/profile/page.js",
-  "/@modal/(.)notes/[id]/page": "app/@modal/(.)notes/[id]/page.js",
   "/api/auth/login/route": "app/api/auth/login/route.js",
   "/api/auth/logout/route": "app/api/auth/logout/route.js",
-  "/api/notes/[id]/route": "app/api/notes/[id]/route.js",
   "/api/notes/route": "app/api/notes/route.js",
   "/api/users/me/route": "app/api/users/me/route.js",
   "/page": "app/page.js"

@@ -1,20 +1,17 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { cookies } from 'next/headers';
 
 const privateRoutes = ['/profile', '/notes'];
 const authRoutes = ['/sign-in', '/sign-up'];
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  
-  const cookieStore = await cookies(); 
-  const accessToken = cookieStore.get('accessToken')?.value;
-  const refreshToken = cookieStore.get('refreshToken')?.value;
+  const accessToken = request.cookies.get('accessToken')?.value;
+  const refreshToken = request.cookies.get('refreshToken')?.value;
 
+  const isAuthRoute = authRoutes.some(route => pathname.startsWith(route));
   const isPrivateRoute = privateRoutes.some(route => pathname.startsWith(route));
-  const isAuthRoute = authRoutes.includes(pathname);
-  
+
   if (!accessToken && isPrivateRoute) {
     if (refreshToken) {
       try {
@@ -25,23 +22,13 @@ export async function middleware(request: NextRequest) {
         });
         
         if (response.ok) {
-          const newHeaders = new Headers(request.headers);
-          const setCookieHeader = response.headers.get('set-cookie');
+          const nextResponse = NextResponse.next();
+          const setCookieHeaders = response.headers.getSetCookie();
 
-          if (setCookieHeader) {
-            newHeaders.set('Cookie', setCookieHeader);
-          }
-          
-          const nextResponse = NextResponse.next({
-            request: {
-              headers: newHeaders,
-            },
+          setCookieHeaders.forEach((cookie) => {
+            nextResponse.headers.append('Set-Cookie', cookie);
           });
           
-          if (setCookieHeader) {
-            nextResponse.headers.set('set-cookie', setCookieHeader);
-          }
-
           return nextResponse;
         }
       } catch (e) {
@@ -49,9 +36,7 @@ export async function middleware(request: NextRequest) {
       }
     }
     
-    const redirectUrl = new URL('/sign-in', request.url);
-    redirectUrl.searchParams.set('redirectedFrom', pathname);
-    return NextResponse.redirect(redirectUrl);
+    return NextResponse.redirect(new URL('/sign-in', request.url));
   }
 
   if (accessToken && isAuthRoute) {
