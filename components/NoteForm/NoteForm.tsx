@@ -9,7 +9,6 @@ import type { Note, CreateNotePayload } from '@/types/note';
 import { AxiosError } from 'axios';
 import css from './NoteForm.module.css';
 
-
 interface ApiError {
   message: string;
 }
@@ -35,10 +34,10 @@ const NoteForm: React.FC = () => {
       queryClient.invalidateQueries({ queryKey: ['notes'] });
       router.back();
     },
-    onError: (error) => {
+    onError: (error: AxiosError<ApiError>) => {
       const errorMessage = error.response?.data?.message || error.message;
       alert(`Could not create note: ${errorMessage}`);
-    }
+    },
   });
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -55,7 +54,7 @@ const NoteForm: React.FC = () => {
   const handleCancel = () => {
     router.back();
   };
-  
+
   return (
     <form onSubmit={handleSubmit} className={css.form}>
       <div className={css.formGroup}>
@@ -66,7 +65,7 @@ const NoteForm: React.FC = () => {
           name="title"
           className={css.input}
           defaultValue={draft.title}
-          onChange={(e) => setDraft({ title: e.target.value })}
+          onChange={e => setDraft({ title: e.target.value })}
           required
           minLength={3}
           maxLength={50}
@@ -81,7 +80,7 @@ const NoteForm: React.FC = () => {
           rows={8}
           className={css.textarea}
           defaultValue={draft.content}
-          onChange={(e) => setDraft({ content: e.target.value })}
+          onChange={e => setDraft({ content: e.target.value })}
           maxLength={500}
         />
       </div>
@@ -93,7 +92,7 @@ const NoteForm: React.FC = () => {
           name="tag"
           className={css.select}
           defaultValue={draft.tag}
-          onChange={(e) => setDraft({ tag: e.target.value })}
+          onChange={e => setDraft({ tag: e.target.value })}
         >
           <option value="Todo">Todo</option>
           <option value="Work">Work</option>
@@ -104,10 +103,19 @@ const NoteForm: React.FC = () => {
       </div>
 
       <div className={css.actions}>
-        <button type="button" className={css.cancelButton} onClick={handleCancel} disabled={mutation.isPending}>
+        <button
+          type="button"
+          className={css.cancelButton}
+          onClick={handleCancel}
+          disabled={mutation.isPending}
+        >
           Cancel
         </button>
-        <button type="submit" className={css.submitButton} disabled={mutation.isPending}>
+        <button
+          type="submit"
+          className={css.submitButton}
+          disabled={mutation.isPending}
+        >
           {mutation.isPending ? 'Creating...' : 'Create note'}
         </button>
       </div>

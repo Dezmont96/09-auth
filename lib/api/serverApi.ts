@@ -7,7 +7,6 @@ import type { AuthResponse } from './types';
 
 async function getAuthHeaders() {
   const cookieStore = await cookies();
-  
   return {
     Cookie: cookieStore.toString(),
   };
@@ -35,14 +34,14 @@ export const getMe = async (): Promise<User> => {
   return response.data;
 };
 
-export const checkSession = async (): Promise<AxiosResponse<AuthResponse>> => {
-  const headers = await getAuthHeaders();
-  const response = await api.get('/auth/session', { headers });
-  return response;
-};
-
 export const createNoteOnServer = async (noteData: CreateNotePayload): Promise<Note> => {
   const headers = await getAuthHeaders();
   const response = await api.post('/notes', noteData, { headers });
   return response.data;
+};
+
+export const checkServerSession = async (): Promise<AxiosResponse<AuthResponse>> => {
+  const headers = await getAuthHeaders();
+  const response = await api.get('/auth/session', { headers });
+  return response;
 };
