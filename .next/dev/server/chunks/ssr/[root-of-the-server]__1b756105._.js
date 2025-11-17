@@ -85,8 +85,8 @@ const __TURBOPACK__default__export__ = api;
 "use strict";
 
 __turbopack_context__.s([
-    "checkSession",
-    ()=>checkSession,
+    "checkServerSession",
+    ()=>checkServerSession,
     "createNoteOnServer",
     ()=>createNoteOnServer,
     "fetchNoteById",
@@ -136,19 +136,19 @@ const getMe = async ()=>{
     });
     return response.data;
 };
-const checkSession = async ()=>{
-    const headers = await getAuthHeaders();
-    const response = await __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$api$2f$api$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"].get('/auth/session', {
-        headers
-    });
-    return response;
-};
 const createNoteOnServer = async (noteData)=>{
     const headers = await getAuthHeaders();
     const response = await __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$api$2f$api$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"].post('/notes', noteData, {
         headers
     });
     return response.data;
+};
+const checkServerSession = async ()=>{
+    const headers = await getAuthHeaders();
+    const response = await __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$api$2f$api$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"].get('/auth/session', {
+        headers
+    });
+    return response;
 };
 }),
 "[project]/app/(private routes)/profile/ProfilePage.module.css [app-rsc] (css module)", ((__turbopack_context__) => {
