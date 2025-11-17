@@ -1,0 +1,3 @@
+module.exports=[80738,a=>{a.v({error:"ErrorMessage-module__bzyCla__error"})},36681,a=>{"use strict";var b=a.i(87924),c=a.i(80738);a.s(["default",0,({children:a="Whoops, something went wrong..."})=>(0,b.jsx)("p",{className:c.default.error,children:a})])},56429,a=>{"use strict";var b=a.i(87924),c=a.i(36681);function d({error:a}){return(0,b.jsxs)(c.default,{children:["Could not fetch note details. ",(0,b.jsx)("br",{}),(0,b.jsx)("em",{children:a.message})]})}a.s(["default",()=>d])}];
+
+//# sourceMappingURL=_56d83247._.js.map

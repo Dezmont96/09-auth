@@ -1,0 +1,3 @@
+module.exports=[29360,a=>{a.v({container:"LayoutNotes-module__GVuWlW__container",notesWrapper:"LayoutNotes-module__GVuWlW__notesWrapper",sidebar:"LayoutNotes-module__GVuWlW__sidebar"})},45655,a=>{"use strict";var b=a.i(7997),c=a.i(29360);a.s(["default",0,({children:a,sidebar:d})=>(0,b.jsxs)("div",{className:c.default.container,children:[(0,b.jsx)("aside",{className:c.default.sidebar,children:d}),(0,b.jsx)("section",{className:c.default.notesWrapper,children:a})]})])}];
+
+//# sourceMappingURL=app_%28private%20routes%29_notes_filter_0641294f._.js.map
